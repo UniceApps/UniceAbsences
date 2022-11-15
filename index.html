@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Absences</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="module" src="gradient.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    </head>
+
+    <body>
+        <!-- Canvas -->
+        <canvas class="orb-canvas"></canvas>
+        <!-- Overlay -->
+        <div class="overlay">
+          <!-- Overlay inner wrapper -->
+          <div class="overlay__inner">
+            <!-- Title -->
+            <h1 class="overlay__title">
+                Générateur d'<span class="text-gradient">absences</span> I.U.T Nice <i>BETA</i>
+            </h1>
+            <!-- Description -->
+
+            <p class="overlay__description">
+                <strong>Attention !</strong>
+                <br>
+                Passé le délai maximum de 5 jours ouvrés à partir du 1er jour d'absence, 
+                aucune justification ne pourra etre acceptée et l'absence sera considerée de fait, 
+                comme non justifiée.
+            </p>
+
+            <form id="infos">
+                <label class="user-label">Nom : </label>
+                <input required="" type="text" id="nom" name="nom" class="input">
+                <br>
+                <label class="user-label">Prénom : </label>                    
+                <input required="" type="text" id="prenom" name="prenom" class="input">
+                <br>
+                <label class="user-label">Groupe : </label>
+                <input required="" type="text" id="groupe" name="groupe" class="input">
+                <br>
+                <label class="user-label">Jour et date : </label>
+                <select required="" id="jour" name="jour" class="input">
+                    <option value="Lundi">Lundi</option>
+                    <option value="Mardi">Mardi</option>
+                    <option value="Mercredi">Mercredi</option>
+                    <option value="Jeudi">Jeudi</option>
+                    <option value="Vendredi">Vendredi</option>
+                    <option value="DS">DS</option>
+                </select>
+                <input required="" type="date" id="date" name="date" class="input">
+                <br>
+                <label>Matin</label>
+                <input type="radio" id="matin" value="Matin">
+                <label>Après-Midi</label>
+                <input type="radio" id="apresmidi" value="ApresMidi">
+                <br>
+                <label>TD</label>
+                <input type="radio" id="td" value="TD">
+                <label>TP</label>
+                <input type="radio" id="apresmidi" value="TP">
+                <label>ER</label>
+                <input type="radio" id="er" value="ER">
+                <br>
+                <label class="user-label">Motif</label>
+                <input required="" type="text" id="motif" name="motif" class="input">
+                <br>
+                <label>Signature : </label>
+                <input type="file" id="signature" name="signature" accept="image/*">
+                <label> Max. 2MB</label>
+            </form>
+            <br>
+            <!-- Buttons -->
+            <div class="overlay__btns">
+            
+              <button class="overlay__btn overlay__btn--transparent" onclick="downloadPDF()">Télécharger PDF</button>
+          
+              <button class="overlay__btn overlay__btn--colors" onclick="printPDF()">
+                <span>Imprimer</span>
+                <span class="overlay__btn-emoji">🖨️</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+        <script>jQuery.noConflict();</script>
+        <script src="script.js"></script>
+    </body>
+
+    <footer>
+        <a href="https://metrixmedia.fr">© MetrixMedia </a>
+    </footer>
+</html>
