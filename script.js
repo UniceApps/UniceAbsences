@@ -11,24 +11,11 @@ function generatePDF() {
     var groupe = document.getElementById("groupe").value;
     var jour = document.getElementById("jour").value;
     var abs = document.getElementById("date").value;
-    var absdate = abs.split("-")[2] + "/" + abs.split("-")[1] + "/" + abs.split("-")[0];
-    var type;
-    if (document.getElementById("tp").checked) {
-        type = type + "tp";
-    } else if (document.getElementById("td").checked) {
-        type = type + "td";
-    } else if (document.getElementById("er").checked) {
-        type = type + "er";
+    var absdate = "";
+    if(abs) {
+        abs.split("-")[2] + "/" + abs.split("-")[1] + "/" + abs.split("-")[0];
     }
-    var horaires;
-    if (document.getElementById("matin").checked) 
-    {
-        horaires = "matin";
-    } 
-    else if (document.getElementById("apresmidi").checked) 
-    {
-        horaires = "amidi";
-    }
+
     var motif = document.getElementById("motif").value;
 
     // PDF
@@ -50,41 +37,43 @@ function generatePDF() {
     switch (jour) {
         case "lundi":
             doc.text(70, 60, absdate);
-            getHoraires(horaires, 60);
-            getType(type, 60);
+            getHoraires(60);
+            getType(60);
             break;
         case "mardi":
             doc.text(70, 65, absdate);
-            getHoraires(horaires, 65);
-            getType(type, 65);
+            getHoraires(65);
+            getType(65);
             break;
         case "mercredi":
             doc.text(70, 72, absdate);
-            getHoraires(horaires, 72);
-            getType(type, 72);
+            getHoraires(72);
+            getType(72);
             break;
         case "jeudi":
             doc.text(70, 77, absdate);
-            getHoraires(horaires, 77);
-            getType(type, 77);
+            getHoraires(77);
+            getType(77);
             break;
         case "vendredi":
             doc.text(70, 82, absdate);
-            getHoraires(horaires, 82);
-            getType(type, 82);
+            getHoraires(82);
+            getType(82);
             break;
         case "ds":
             doc.text(70, 87, absdate);
-            getHoraires(horaires, 87);  
-            getType(type, 87);
+            getHoraires(87);  
+            getType(87);
             break;
     }
 
+    // Infos motif
     doc.setFont(undefined, 'normal');
     doc.text(20, 105, "Motif : " + motif);
     doc.setFontSize(30);
     doc.text(".", 20, 110);
 
+    // Infos date + signature
     doc.setFontSize(12);
     doc.text("Pièce justificative ci-jointe", 20, 120);
     doc.text(20, 125, "Date : Le " + ajddate);
@@ -93,6 +82,7 @@ function generatePDF() {
         doc.addImage(signatureURI, "PNG", 170, 120);
     }
 
+    // Pied de page
     doc.setFontSize(10);
     doc.text("* Passé le délai maximum de 5 jours ouvrés à partir du 1er jour d'absence, aucune justification ne", 20, 140);
     doc.text("pourra être acceptée et l'absence sera considerée de fait, comme non justifiée.", 20, 145);
@@ -116,27 +106,50 @@ function printPDF() {
     window.open(doc.output('bloburl'), '_blank');
 }
 
-function getHoraires(horaires, y) {
-    switch (horaires) {
-        case "matin":
-            doc.text(150, y, "X");
-            break;
-        case "amidi":
-            doc.text(170, y, "X");
-            break;
+// Obtenir horaires
+function getHoraires(y) {
+    getHorairesMatin(y);
+    getHorairesApresmidi(y);
+}
+
+function getHorairesMatin(y) {
+    if (document.getElementById("matin").checked) {
+        doc.text(150, y, "X");
     }
 }
 
-function getType(type, y) {
-    if(type == "td") {
-        doc.text(110, y, "X");
-    } else if(type == "tp") {
-        doc.text(120, y, "X");
-    } else if(type == "er") {
-        doc.text(130, y, "X");
+function getHorairesApresmidi(y) {
+    if (document.getElementById("apresmidi").checked) {
+        doc.text(170, y, "X");
     }
-}   
+}
 
+// Obtenir type de cours
+function getType(y) {
+    getTypeTD(y);
+    getTypeTP(y);
+    getTypeER(y);
+}
+
+function getTypeTD(y) {
+    if(document.getElementById("tp").checked) {
+        doc.text(115, y, "X");
+    }
+}
+
+function getTypeTP(y) {
+    if(document.getElementById("td").checked) {
+        doc.text(125, y, "X");
+    }
+}
+
+function getTypeER(y) {
+    if(document.getElementById("er").checked) {
+        doc.text(135, y, "X");
+    }
+}
+
+// Convertit la signature en URI base64
 document.querySelector('#signature').onchange = function(){
     var reader = new FileReader();
     reader.onloadend = function () {

@@ -23,15 +23,15 @@
           <div class="overlay__inner">
             <!-- Title -->
             <h1 class="overlay__title">
-                Générateur d'<span class="text-gradient">absences</span> I.U.T Nice <i>BETA</i>
+                Générateur d'<span class="text-gradient">absences</span> I.U.T Nice
             </h1>
             <!-- Description -->
 
             <p class="overlay__description">
                 <strong>Attention !</strong>
                 <br>
-                Passé le délai maximum de 5 jours ouvrés à partir du 1er jour d'absence, 
-                aucune justification ne pourra etre acceptée et l'absence sera considerée de fait, 
+                Passé le délai de 5 jours ouvrés après le 1e jour d'absence, 
+                aucune justification ne pourra être acceptée et l'absence sera considerée, 
                 comme non justifiée.
             </p>
 
@@ -57,9 +57,9 @@
                 <input required="" type="date" id="date" name="date" class="input">
                 <br>
                 <label>Matin</label>
-                <input type="radio" id="matin" value="Matin">
+                <input type="checkbox" id="matin" value="Matin">
                 <label>Après-Midi</label>
-                <input type="radio" id="apresmidi" value="ApresMidi">
+                <input type="checkbox" id="apresmidi" value="ApresMidi">
                 <br>
                 <label>TD</label>
                 <input type="checkbox" id="td" value="TD">
@@ -72,8 +72,7 @@
                 <input required="" type="text" id="motif" name="motif" class="input">
                 <br>
                 <label>Signature : </label>
-                <input type="file" id="signature" name="signature" accept="image/*">
-                <label> Max. 2MB</label>
+                <input type="file" id="signature" name="signature" accept=".png,.jpg">
             </form>
             <br>
             <!-- Buttons -->
