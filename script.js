@@ -1,6 +1,7 @@
 window.jsPDF = window.jspdf.jsPDF;
 var doc = new jsPDF();
 var signatureURI = "";
+var nbDates = 1;
 
 function generatePDF() {
     // Variables
@@ -9,11 +10,31 @@ function generatePDF() {
     var nom = document.getElementById("nom").value;
     var prenom = document.getElementById("prenom").value;
     var groupe = document.getElementById("groupe").value;
-    var jour = document.getElementById("jour").value;
-    var abs = document.getElementById("date").value;
-    var absdate = "";
-    if(abs) {
-        abs.split("-")[2] + "/" + abs.split("-")[1] + "/" + abs.split("-")[0];
+    
+    var jourInputs = document.getElementsByClassName("jour");
+    var dateInputs = document.getElementsByClassName("date");
+    var apresmidiInputs = document.getElementsByClassName("apresmidi");
+    var matinInputs = document.getElementsByClassName("matin");
+    var tpInputs = document.getElementsByClassName("tp");
+    var tdInputs = document.getElementsByClassName("td");
+    var erInputs = document.getElementsByClassName("er");
+    
+    var jourValues = [];
+    var dateValues = [];
+    var apresmidiValues = [];
+    var matinValues = [];
+    var tpValues = [];
+    var tdValues = [];
+    var erValues = [];
+    
+    for (var i = 0; i < jourInputs.length; i++) {
+        jourValues.push(jourInputs[i].value);
+        dateValues.push(dateInputs[i].value);
+        apresmidiValues.push(apresmidiInputs[i].checked);
+        matinValues.push(matinInputs[i].checked);
+        tpValues.push(tpInputs[i].checked);
+        tdValues.push(tdInputs[i].checked);
+        erValues.push(erInputs[i].checked);
     }
 
     var motif = document.getElementById("motif").value;
@@ -34,37 +55,54 @@ function generatePDF() {
     doc.addImage("tableau.png", "PNG", 20, 45, 160, 50);
 
     // Infos date + horaires + type
-    switch (jour) {
-        case "lundi":
-            doc.text(70, 60, absdate);
-            getHoraires(60);
-            getType(60);
-            break;
-        case "mardi":
-            doc.text(70, 65, absdate);
-            getHoraires(65);
-            getType(65);
-            break;
-        case "mercredi":
-            doc.text(70, 72, absdate);
-            getHoraires(72);
-            getType(72);
-            break;
-        case "jeudi":
-            doc.text(70, 77, absdate);
-            getHoraires(77);
-            getType(77);
-            break;
-        case "vendredi":
-            doc.text(70, 82, absdate);
-            getHoraires(82);
-            getType(82);
-            break;
-        case "ds":
-            doc.text(70, 87, absdate);
-            getHoraires(87);  
-            getType(87);
-            break;
+    for (var i = 0; i < jourInputs.length; i++) {
+        var jour = jourValues[i];
+        var abs = dateValues[i];
+        var apresmidi = apresmidiValues[i];
+        var matin = matinValues[i];
+        var tp = tpValues[i];
+        var td = tdValues[i];
+        var er = erValues[i];
+        var absdate = "";
+
+        console.log(jour, abs, matin, apresmidi, td, tp, er);
+
+        if(abs) {
+            absdate = abs.split("-")[2] + "/" + abs.split("-")[1] + "/" + abs.split("-")[0];
+        }
+
+        switch (jour) {
+            case "lundi":
+                doc.text(70, 60, absdate);
+                getHoraires(60, matin, apresmidi);
+                getType(60, td, tp, er);
+                break;
+            case "mardi":
+                doc.text(70, 65, absdate);
+                getHoraires(65, matin, apresmidi);
+                getType(65, td, tp, er);
+                break;
+            case "mercredi":
+                doc.text(70, 72, absdate);
+                getHoraires(72, matin, apresmidi);
+                getType(72, td, tp, er);
+                break;
+            case "jeudi":
+                doc.text(70, 77, absdate);
+                getHoraires(77, matin, apresmidi);
+                getType(77, td, tp, er);
+                break;
+            case "vendredi":
+                doc.text(70, 82, absdate);
+                getHoraires(82, matin, apresmidi);
+                getType(82, td, tp, er);
+                break;
+            case "ds":
+                doc.text(70, 87, absdate);
+                getHoraires(87, matin, apresmidi);  
+                getType(87, td, tp, er);
+                break;
+        }
     }
 
     // Infos motif
@@ -107,45 +145,85 @@ function printPDF() {
 }
 
 // Obtenir horaires
-function getHoraires(y) {
-    getHorairesMatin(y);
-    getHorairesApresmidi(y);
+function getHoraires(y, matin, apresmidi) {
+    if (matin == true) {
+        getHorairesMatin(y);
+    }
+    if (apresmidi == true) {
+        getHorairesApresmidi(y);
+    }
 }
 
 function getHorairesMatin(y) {
-    if (document.getElementById("matin").checked) {
         doc.text(150, y, "X");
-    }
 }
 
 function getHorairesApresmidi(y) {
-    if (document.getElementById("apresmidi").checked) {
         doc.text(170, y, "X");
-    }
 }
 
 // Obtenir type de cours
-function getType(y) {
-    getTypeTD(y);
-    getTypeTP(y);
-    getTypeER(y);
-}
-
-function getTypeTD(y) {
-    if(document.getElementById("tp").checked) {
-        doc.text(115, y, "X");
+function getType(y, td, tp, er) {
+    if (td == true) {
+        getTypeTD(y);
+    }
+    if (tp == true) {
+        getTypeTP(y);
+    }
+    if (er == true) {
+        getTypeER(y);
     }
 }
 
-function getTypeTP(y) {
-    if(document.getElementById("td").checked) {
-        doc.text(125, y, "X");
+function getTypeTD(y, i) {
+    doc.text(115, y, "X");
+}
+
+function getTypeTP(y, i) {
+    doc.text(125, y, "X");
+}
+
+function getTypeER(y, i) {
+    doc.text(135, y, "X");
+}
+
+function addDate() {
+    // add input field on html
+    var code = `
+    <select required="" class="jour" id="jour" name="jour" class="input">
+        <option value="lundi">Lundi</option>
+        <option value="mardi">Mardi</option>
+        <option value="mercredi">Mercredi</option>
+        <option value="jeudi">Jeudi</option>
+        <option value="vendredi">Vendredi</option>
+        <option value="ds">DS</option>
+    </select>
+    <input required="" class="date" type="date" id="date" name="date" class="input">
+    <label>| Matin</label>
+    <input type="checkbox" class="matin" id="matin" value="Matin">
+    <label>| Après-Midi</label>
+    <input type="checkbox" class="apresmidi" id="apresmidi" value="ApresMidi">
+    <label>| TD</label>
+    <input type="checkbox" class="td" id="td" value="TD">
+    <label>| TP</label>
+    <input type="checkbox" class="tp" id="tp" value="TP">
+    <label>| ER</label>
+    <input type="checkbox" class="er" id="er" value="ER">
+    <input type="button" class="remove" value="X" onclick="removeDate()">
+    <hr>
+    `;
+    var div = document.getElementById("dates");
+    if (nbDates < 6) {
+        div.appendChild(document.createElement('div')).innerHTML = code;
+        nbDates++;
     }
 }
 
-function getTypeER(y) {
-    if(document.getElementById("er").checked) {
-        doc.text(135, y, "X");
+function removeDate() {
+    var div = document.getElementById("dates");
+    if (nbDates > 1) {
+        div.removeChild(div.lastChild);
+        nbDates--;
     }
 }
 
