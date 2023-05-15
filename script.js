@@ -44,7 +44,6 @@ function generatePDF() {
     doc.setFontSize(12);
     doc.setFont(undefined, 'bold');
     doc.text("I.U.T NICE - COTE D'AZUR", 20, 20);
-    doc.text("G.E.I.I", 160, 20);
     doc.text("A B S E N C E", 90, 25);
 
     // Infos étudiant
